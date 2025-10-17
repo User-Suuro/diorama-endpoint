@@ -6,7 +6,13 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db-generate": "drizzle-kit generate",
+    "db-drop": "drizzle-kit drop",
+    "db-push": "drizzle-kit push",
+    "db-migrate": "drizzle-kit migrate",
+    "db-check": "drizzle-kit check",
+    "db-studio": "drizzle-kit studio"
   },
   "dependencies": {
     "drizzle-orm": "^0.44.6",
