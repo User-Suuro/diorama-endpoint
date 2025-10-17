@@ -1,0 +1,1 @@
+ALTER TABLE `device_status` RENAME COLUMN `proximity_val` TO `visitors_val`;
