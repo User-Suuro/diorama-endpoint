@@ -1,0 +1,1 @@
+ALTER TABLE `device_status` RENAME COLUMN `date` TO `createdAt`;

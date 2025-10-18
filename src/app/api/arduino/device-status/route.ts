@@ -64,7 +64,7 @@ export async function GET() {
     const records = await db
       .select()
       .from(deviceStatus)
-      .orderBy(desc(deviceStatus.date))
+      .orderBy(desc(deviceStatus.createdAt))
       .limit(1);
 
     if (records.length === 0) {
