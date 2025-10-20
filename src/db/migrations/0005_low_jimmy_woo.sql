@@ -1,0 +1,1 @@
+ALTER TABLE `device_status` DROP COLUMN `is_arduino`;

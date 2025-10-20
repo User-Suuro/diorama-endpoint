@@ -6,7 +6,6 @@ import { desc } from "drizzle-orm";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const is_arduino = true;
 
     const {
       switch_01,
@@ -44,7 +43,6 @@ export async function POST(req: Request) {
         visitors_val,
         claps_val,
         lums_val,
-        is_arduino,
       })
       .$returningId();
 

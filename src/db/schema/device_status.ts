@@ -9,6 +9,5 @@ export const deviceStatus = mysqlTable("device_status", {
   visitors_val: int("visitors_val").notNull(),
   claps_val: int("claps_val").notNull(),
   lums_val: int("lums_val").notNull(),
-  is_arduino: boolean("is_arduino").notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
