@@ -34,6 +34,7 @@ export async function POST(req: Request) {
     const claps_val = lastRecord?.claps_val ?? 0;
     const lums_val = lastRecord?.lums_val ?? 0;
     const createdAt = lastRecord?.createdAt ?? new Date();
+    const is_arduino = false;
 
     // Insert new record
     const [inserted] = await db
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
         visitors_val,
         claps_val,
         lums_val,
+        is_arduino,
         createdAt,
       })
       .$returningId();

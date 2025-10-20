@@ -1,0 +1,1 @@
+ALTER TABLE `device_status` ADD `is_arduino` boolean NOT NULL;
