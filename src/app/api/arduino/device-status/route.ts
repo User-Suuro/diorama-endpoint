@@ -48,8 +48,10 @@ export async function POST(req: Request) {
       })
       .where(eq(deviceStatus.id, 1));
 
-    // ✅ Correctly check the number of affected rows (bigint)
-    if (result[0].affectedRows === 0) {
+    // ✅ Type-safe workaround
+    const [{ affectedRows }] = result as unknown as { affectedRows: bigint }[];
+
+    if (Number(affectedRows) === 0) {
       return NextResponse.json(
         { error: "Record with id = 1 not found" },
         { status: 404 }
