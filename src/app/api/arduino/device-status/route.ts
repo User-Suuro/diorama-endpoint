@@ -59,30 +59,29 @@ export async function POST(req: Request) {
   }
 }
 
-// Optimized GET
 export async function GET() {
   try {
-    const [record] = await db
-      .select({
-        s1: deviceStatus.switch_01,
-        s2: deviceStatus.switch_02,
-        s3: deviceStatus.switch_03,
-        s4: deviceStatus.switch_04,
-      })
+    const records = await db
+      .select()
       .from(deviceStatus)
       .orderBy(desc(deviceStatus.createdAt))
       .limit(1);
 
-    if (!record) {
-      return NextResponse.json({ msg: "no" }, { status: 404 });
+    if (records.length === 0) {
+      return NextResponse.json(
+        { message: "No records found" },
+        { status: 404 }
+      );
     }
 
-    // Compact JSON
-    return new NextResponse(JSON.stringify(record), {
+    return new NextResponse(JSON.stringify(records[0]), {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("GET /device-status error:", error);
-    return NextResponse.json({ error: "server" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
