@@ -1,19 +1,31 @@
 import { db } from "@/db/drizzle";
 import { deviceStatus } from "@/db/schema/device_status";
 import { NextResponse } from "next/server";
-import { desc, eq } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { switch_01, switch_02, switch_03, switch_04 } = body;
 
-    // ✅ Validate input
+    const {
+      switch_01,
+      switch_02,
+      switch_03,
+      switch_04,
+      visitors_val,
+      claps_val,
+      lums_val,
+    } = body;
+
+    // Simple validation
     if (
       typeof switch_01 !== "boolean" ||
       typeof switch_02 !== "boolean" ||
       typeof switch_03 !== "boolean" ||
-      typeof switch_04 !== "boolean"
+      typeof switch_04 !== "boolean" ||
+      typeof visitors_val !== "number" ||
+      typeof claps_val !== "number" ||
+      typeof lums_val !== "number"
     ) {
       return NextResponse.json(
         { error: "Invalid request data" },
@@ -21,21 +33,9 @@ export async function POST(req: Request) {
       );
     }
 
-    // ✅ Fetch latest record
-    const [lastRecord] = await db
-      .select()
-      .from(deviceStatus)
-      .orderBy(desc(deviceStatus.updatedAt))
-      .limit(1);
-
-    const visitors_val = lastRecord?.visitors_val ?? 0;
-    const claps_val = lastRecord?.claps_val ?? 0;
-    const lums_val = lastRecord?.lums_val ?? 0;
-
-    // ✅ Update id = 1, with timestamp
-    const [result] = await db
-      .update(deviceStatus)
-      .set({
+    const [inserted] = await db
+      .insert(deviceStatus)
+      .values({
         switch_01,
         switch_02,
         switch_03,
@@ -43,21 +43,13 @@ export async function POST(req: Request) {
         visitors_val,
         claps_val,
         lums_val,
-        is_arduino: true,
-        updatedAt: new Date(),
       })
-      .where(eq(deviceStatus.id, 1))
-      .execute(); // 🔥 gives you MySqlRawQueryResult
+      .$returningId();
 
-    // ✅ Check affected rows
-    if (Number(result.affectedRows ?? 0) === 0) {
-      return NextResponse.json(
-        { error: "Record with id = 1 not found" },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json({ success: true });
+    return NextResponse.json(
+      { success: true, id: inserted.id },
+      { status: 201 }
+    );
   } catch (error) {
     console.error("POST /device-status error:", error);
     return NextResponse.json(
@@ -72,7 +64,7 @@ export async function GET() {
     const records = await db
       .select()
       .from(deviceStatus)
-      .orderBy(desc(deviceStatus.updatedAt))
+      .orderBy(desc(deviceStatus.createdAt))
       .limit(1);
 
     if (records.length === 0) {
