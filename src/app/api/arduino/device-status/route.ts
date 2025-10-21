@@ -8,7 +8,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { switch_01, switch_02, switch_03, switch_04 } = body;
 
-    // 🧭 Validate switch data
+    // ✅ Validate input
     if (
       typeof switch_01 !== "boolean" ||
       typeof switch_02 !== "boolean" ||
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Fetch latest device status for sensor values
+    // ✅ Fetch latest record
     const [lastRecord] = await db
       .select()
       .from(deviceStatus)
@@ -32,8 +32,8 @@ export async function POST(req: Request) {
     const claps_val = lastRecord?.claps_val ?? 0;
     const lums_val = lastRecord?.lums_val ?? 0;
 
-    // ✅ Update only the record with id = 1
-    const result = await db
+    // ✅ Update id = 1, with timestamp
+    const [result] = await db
       .update(deviceStatus)
       .set({
         switch_01,
@@ -44,21 +44,20 @@ export async function POST(req: Request) {
         claps_val,
         lums_val,
         is_arduino: true,
-        updatedAt: new Date(), // ✅ update timestamp
+        updatedAt: new Date(),
       })
-      .where(eq(deviceStatus.id, 1));
+      .where(eq(deviceStatus.id, 1))
+      .execute(); // 🔥 gives you MySqlRawQueryResult
 
-    // ✅ Type-safe workaround
-    const [{ affectedRows }] = result as unknown as { affectedRows: bigint }[];
-
-    if (Number(affectedRows) === 0) {
+    // ✅ Check affected rows
+    if (Number(result.affectedRows ?? 0) === 0) {
       return NextResponse.json(
         { error: "Record with id = 1 not found" },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("POST /device-status error:", error);
     return NextResponse.json(
