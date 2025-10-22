@@ -75,7 +75,10 @@ export async function GET() {
     }
 
     return new NextResponse(JSON.stringify(records[0]), {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache",
+      },
     });
   } catch (error) {
     console.error("GET /device-status error:", error);
