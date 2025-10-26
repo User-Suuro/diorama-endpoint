@@ -6,15 +6,21 @@ import { desc } from "drizzle-orm";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { switch_01, switch_02, switch_03, switch_04, is_arduino } = body;
+    const {
+      front_switch,
+      back_switch,
+      left_switch,
+      inside_switch,
+      is_arduino,
+    } = body;
 
     const result = await db
       .insert(controllers)
       .values({
-        switch_01,
-        switch_02,
-        switch_03,
-        switch_04,
+        front_switch,
+        back_switch,
+        left_switch,
+        inside_switch,
         is_arduino,
       })
       .$returningId();

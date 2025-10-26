@@ -1,0 +1,143 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "id": "89e21d8b-361c-486c-bfba-593ded7ba1ad",
+  "prevId": "232aa2a2-549c-4db6-88a4-6e70e46ef280",
+  "tables": {
+    "controllers": {
+      "name": "controllers",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "front_switch": {
+          "name": "front_switch",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "back_switch": {
+          "name": "back_switch",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "left_switch": {
+          "name": "left_switch",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "inside_switch": {
+          "name": "inside_switch",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "is_arduino": {
+          "name": "is_arduino",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "controllers_id": {
+          "name": "controllers_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    },
+    "sensors": {
+      "name": "sensors",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "visitors_val": {
+          "name": "visitors_val",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "claps_val": {
+          "name": "claps_val",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "lums_val": {
+          "name": "lums_val",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "sensors_id": {
+          "name": "sensors_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraint": {}
+    }
+  },
+  "views": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {
+      "\"controllers\".\"switch_01\"": "\"controllers\".\"front_switch\"",
+      "\"controllers\".\"switch_02\"": "\"controllers\".\"back_switch\"",
+      "\"controllers\".\"switch_03\"": "\"controllers\".\"left_switch\"",
+      "\"controllers\".\"switch_04\"": "\"controllers\".\"inside_switch\""
+    }
+  },
+  "internal": {
+    "tables": {},
+    "indexes": {}
+  }
+}
